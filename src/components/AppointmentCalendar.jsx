@@ -55,7 +55,7 @@ const AppointmentCalendar = () => {
   useEffect(() => {
     // Fetch appointments from the backend and ensure dates are correct
     axios
-      .get(`${apiUrl}/appointments`)
+      .get(`https://nirmitee-cal-app-server.onrender.com/appointments`)
       .then((res) => {
         const formattedEvents = res.data.map((event) => ({
           ...event,
@@ -75,7 +75,7 @@ const AppointmentCalendar = () => {
 
     // Send updated event to the backend
     axios
-      .put(`${apiUrl}/appointments/${event._id}`, updatedEvent)
+      .put(`https://nirmitee-cal-app-server.onrender.com/appointments/${event._id}`, updatedEvent)
       .then((res) => {
         console.log("Event updated successfully:", res.data);
       })
@@ -117,7 +117,7 @@ const AppointmentCalendar = () => {
 
     // Send delete request to the backend
     axios
-      .delete(`${apiUrl}/appointments/${selectedEvent._id}`)
+      .delete(`https://nirmitee-cal-app-server.onrender.com/appointments/${selectedEvent._id}`)
       .then((res) => {
         console.log("Event deleted successfully:", res.data);
         setModalOpen(false);
@@ -144,7 +144,7 @@ const AppointmentCalendar = () => {
 
     // Send the new event to the backend
     axios
-      .post(`${apiUrl}/appointments`, eventToSave)
+      .post(`https://nirmitee-cal-app-server.onrender.com/appointments`, eventToSave)
       .then((res) => {
         setEvents([
           ...events,
