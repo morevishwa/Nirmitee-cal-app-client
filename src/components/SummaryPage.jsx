@@ -8,7 +8,7 @@ const SummaryPage = () => {
 
   useEffect(() => {
     // Fetch appointments
-    axios.get('http://localhost:5000/appointments')
+    axios.get('https://nirmitee-cal-app-server.onrender.com/appointments')
       .then((res) => setAppointments(res.data));
   }, []);
 
