@@ -28,14 +28,14 @@ export const getRandomColor = () => {
   return color;
 };
 
-const EventWrapper = ({ event, onClick }) => {
+// const EventWrapper = ({ event, onClick }) => {
 
-  return (
-    <div onClick={console.log} style={{ backgroundColor: event.color, padding: '5px', borderRadius: '5px', color: 'white' }}>
-      {event.title}
-    </div>
-  );
-};
+//   return (
+//     <div onClick={console.log} style={{ backgroundColor: event.color, padding: '5px', borderRadius: '5px', color: 'white' }}>
+//       {event.title}
+//     </div>
+//   );
+// };
 const AppointmentCalendar = () => {
   const [events, setEvents] = useState([]);
   const [newEvent, setNewEvent] = useState({
@@ -47,13 +47,15 @@ const AppointmentCalendar = () => {
   });
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
+  console.log(selectedSlot)
   const [selectedEvent, setSelectedEvent] = useState(null); // Track selected event for deletion
   const DnDCalendar = withDragAndDrop(Calendar);
+  const apiUrl = process.env.RAECT_APP_API_URL || "http://localhost:5000"
 
   useEffect(() => {
     // Fetch appointments from the backend and ensure dates are correct
     axios
-      .get("http://localhost:5000/appointments")
+      .get(`${apiUrl}/appointments`)
       .then((res) => {
         const formattedEvents = res.data.map((event) => ({
           ...event,
@@ -73,7 +75,7 @@ const AppointmentCalendar = () => {
 
     // Send updated event to the backend
     axios
-      .put(`http://localhost:5000/appointments/${event._id}`, updatedEvent)
+      .put(`${apiUrl}/appointments/${event._id}`, updatedEvent)
       .then((res) => {
         console.log("Event updated successfully:", res.data);
       })
@@ -96,7 +98,7 @@ const AppointmentCalendar = () => {
   };
 
   const handleEventSelect = (event) => {
-    
+
     setSelectedEvent(event);
     setNewEvent({
       title: event.title,
@@ -115,7 +117,7 @@ const AppointmentCalendar = () => {
 
     // Send delete request to the backend
     axios
-      .delete(`http://localhost:5000/appointments/${selectedEvent._id}`)
+      .delete(`${apiUrl}/appointments/${selectedEvent._id}`)
       .then((res) => {
         console.log("Event deleted successfully:", res.data);
         setModalOpen(false);
@@ -142,7 +144,7 @@ const AppointmentCalendar = () => {
 
     // Send the new event to the backend
     axios
-      .post("http://localhost:5000/appointments", eventToSave)
+      .post(`${apiUrl}/appointments`, eventToSave)
       .then((res) => {
         setEvents([
           ...events,
@@ -181,11 +183,11 @@ const AppointmentCalendar = () => {
         selectable
         resizable
         style={{ height: 500 }}
-        // components={{
-        //   eventWrapper: (eventProps) => <EventWrapper   {...eventProps}
-        //     onClick={() => handleEventSelect(eventProps.event)} // Pass event to handleEventClick
-        //   />
-        // }}
+      // components={{
+      //   eventWrapper: (eventProps) => <EventWrapper   {...eventProps}
+      //     onClick={() => handleEventSelect(eventProps.event)} // Pass event to handleEventClick
+      //   />
+      // }}
       />
       <Modal isOpen={modalOpen} toggle={handleCloseModal}>
         <ModalHeader toggle={handleCloseModal}>
